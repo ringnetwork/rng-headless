@@ -12,11 +12,11 @@
   ],
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/trustnote/headless.git",
+    "url": "https://github.com/trustnote/trustnote-pow-headless.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/trustnote/headless/issues"
+    "url": "https://github.com/trustnote/trustnote-pow-headlessissues"
   },
   "browser": {
     "request": "browser-request",
