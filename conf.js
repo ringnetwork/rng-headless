@@ -8,7 +8,7 @@ exports.bLight = false;
 
 exports.storage = 'sqlite';
 
-exports.hub = 'victor.trustnote.org/tn';
+exports.hub = 'test.mainchain.pow.trustnote.org:9191';
 exports.deviceName = 'Headless';
 exports.permanent_pairing_secret = 'randomstring';
 exports.control_addresses = ['DEVICE ALLOWED TO CHAT'];
