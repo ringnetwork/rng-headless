@@ -8,7 +8,11 @@ exports.bLight = false;
 
 exports.storage = 'sqlite';
 
+<<<<<<< HEAD
 exports.hub = '127.0.0.1:6616';
+=======
+exports.hub = 'test.mainchain.pow.trustnote.org:9191';
+>>>>>>> Update conf.js
 exports.deviceName = 'Headless';
 exports.permanent_pairing_secret = 'randomstring';
 exports.control_addresses = ['DEVICE ALLOWED TO CHAT'];
