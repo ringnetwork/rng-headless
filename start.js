@@ -244,7 +244,7 @@ setTimeout(function(){
 		readSingleWallet(function(wallet){
 			// global
 			wallet_id = wallet;
-			var device = require('trustnote-pow-common/device.js');
+			var device = require('trustnote-pow-common/wallet/device.js');
 			device.setDevicePrivateKey(devicePrivKey);
 			let my_device_address = device.getMyDeviceAddress();
 			db.query("SELECT 1 FROM extended_pubkeys WHERE device_address=?", [my_device_address], function(rows){
