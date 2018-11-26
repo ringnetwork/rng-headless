@@ -352,7 +352,7 @@ function issueChangeAddressAndSendPayment(asset, amount, to_address, device_addr
 		});
 	}
 	else{
-		var walletDefinedByKeys = require('trustnote-pow-common/wallet_defined_by_keys.js');
+		var walletDefinedByKeys = require('trustnote-pow-common/wallet/wallet_defined_by_keys.js');
 		walletDefinedByKeys.issueOrSelectNextChangeAddress(wallet_id, function(objAddr){
 			sendPayment(asset, amount, to_address, objAddr.address, device_address, onDone);
 		});
@@ -360,21 +360,21 @@ function issueChangeAddressAndSendPayment(asset, amount, to_address, device_addr
 }
 
 function issueOrSelectNextMainAddress(handleAddress){
-	var walletDefinedByKeys = require('trustnote-pow-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('trustnote-pow-common/wallet/wallet_defined_by_keys.js');
 	walletDefinedByKeys.issueOrSelectNextAddress(wallet_id, 0, function(objAddr){
 		handleAddress(objAddr.address);
 	});
 }
 
 function issueNextMainAddress(handleAddress){
-	var walletDefinedByKeys = require('trustnote-pow-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('trustnote-pow-common/wallet/wallet_defined_by_keys.js');
 	walletDefinedByKeys.issueNextAddress(wallet_id, 0, function(objAddr){
 		handleAddress(objAddr.address);
 	});
 }
 
 function issueOrSelectStaticChangeAddress(handleAddress){
-	var walletDefinedByKeys = require('trustnote-pow-common/wallet_defined_by_keys.js');
+	var walletDefinedByKeys = require('trustnote-pow-common/wallet/wallet_defined_by_keys.js');
 	walletDefinedByKeys.readAddressByIndex(wallet_id, 1, 0, function(objAddr){
 		if (objAddr)
 			return handleAddress(objAddr.address);
