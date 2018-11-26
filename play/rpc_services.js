@@ -189,6 +189,25 @@ function initRPC() {
 		}
 
 	});
+	
+	/**
+	 * check address is valid.
+	 * @return [string] msg
+	 */
+	server.expose('checkAddress', function(args, opt, cb) {
+		var address = args[0];
+		if(address) {
+			if(validationUtils.isValidAddress(address)) {
+				cb(null, "ok");
+			}
+			else {
+				cb("invalid address");
+			}
+		}
+		else {
+			cb("invalid address");
+		}
+	});
 
 	/**
 	 * Send funds to address.
