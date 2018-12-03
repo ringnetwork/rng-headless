@@ -1,16 +1,16 @@
 /*jslint node: true */
 "use strict";
 var headlessWallet = require('../start.js');
-var eventBus = require('trustnote-pow-common/event_bus.js');
-var objectHash = require('trustnote-pow-common/object_hash.js');
+var eventBus = require('trustnote-pow-common/base/event_bus.js');
+var objectHash = require('trustnote-pow-common/base/object_hash.js');
 
 function onError(err){
 	throw Error(err);
 }
 
 function createDefinitionChange(){
-	var composer = require('trustnote-pow-common/composer.js');
-	var network = require('trustnote-pow-common/network.js');
+	var composer = require('trustnote-pow-common/unit/composer.js');
+	var network = require('trustnote-pow-common/p2p/network.js');
 	var callbacks = composer.getSavingCallbacks({
 		ifNotEnoughFunds: onError,
 		ifError: onError,

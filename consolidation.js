@@ -1,9 +1,9 @@
 /*jslint node: true */
 "use strict";
-var constants = require('trustnote-pow-common/constants.js');
-var conf = require('trustnote-pow-common/conf.js');
-var db = require('trustnote-pow-common/db.js');
-var mutex = require('trustnote-pow-common/mutex.js');
+var constants = require('trustnote-pow-common/config/constants.js');
+var conf = require('trustnote-pow-common/config/conf.js');
+var db = require('trustnote-pow-common/db/db.js');
+var mutex = require('trustnote-pow-common/base/mutex.js');
 
 const AUTHOR_SIZE = 3 // "sig"
 	+ 44  // pubkey
