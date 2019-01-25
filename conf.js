@@ -6,9 +6,6 @@
 exports.bServeAsHub = false;
 exports.bLight = false;
 
-// byzantine
-exports.IF_BYZANTINE = true;
-
 exports.storage = 'sqlite';
 
 exports.hub = '10.10.11.90:9191';
