@@ -1,15 +1,15 @@
 /*jslint node: true */
 "use strict";
 var headlessWallet = require('../start.js');
-var eventBus = require('rng-common/base/event_bus.js');
+var eventBus = require('rng-core/base/event_bus.js');
 
 function onError(err){
 	throw Error(err);
 }
 
 function createPayment(){
-	var composer = require('rng-common/unit/composer.js');
-	var network = require('rng-common/p2p/network.js');
+	var composer = require('rng-core/unit/composer.js');
+	var network = require('rng-core/p2p/network.js');
 	var callbacks = composer.getSavingCallbacks({
 		ifNotEnoughFunds: onError,
 		ifError: onError,

@@ -1,16 +1,16 @@
 /*jslint node: true */
 "use strict";
 var headlessWallet = require('../start.js');
-var eventBus = require('rng-common/base/event_bus.js');
+var eventBus = require('rng-core/base/event_bus.js');
 
 function onError(err){
 	throw Error(err);
 }
 
 function createIndivisibleAssetPayment(){
-	var network = require('rng-common/p2p/network.js');
-	var indivisibleAsset = require('rng-common/asset/indivisible_asset.js');
-	var walletGeneral = require('rng-common/wallet/wallet_general.js');
+	var network = require('rng-core/p2p/network.js');
+	var indivisibleAsset = require('rng-core/asset/indivisible_asset.js');
+	var walletGeneral = require('rng-core/wallet/wallet_general.js');
 
 	indivisibleAsset.composeAndSaveIndivisibleAssetPaymentJoint({
 		asset: 'JY4RvlUGv0qWItikizmNOIjIYZeEciODOog8AzLju50=',

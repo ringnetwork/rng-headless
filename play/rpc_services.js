@@ -7,26 +7,26 @@
 
 "use strict";
 var headlessWallet = require('../start.js');
-var conf = require('rng-common/config/conf.js');
-var eventBus = require('rng-common/base/event_bus.js');
-var db = require('rng-common/db/db.js');
-var mutex = require('rng-common/base/mutex.js');
-var storage = require('rng-common/db/storage.js');
-var constants = require('rng-common/config/constants.js');
-var validationUtils = require("rng-common/validation/validation_utils.js");
+var conf = require('rng-core/config/conf.js');
+var eventBus = require('rng-core/base/event_bus.js');
+var db = require('rng-core/db/db.js');
+var mutex = require('rng-core/base/mutex.js');
+var storage = require('rng-core/db/storage.js');
+var constants = require('rng-core/config/constants.js');
+var validationUtils = require("rng-core/validation/validation_utils.js");
 var wallet_id;
 
 if (conf.bSingleAddress)
 	throw Error('can`t run in single address mode');
 
 function initRPC() {
-	var composer = require('rng-common/unit/composer.js');
-	var network = require('rng-common/p2p/network.js');
+	var composer = require('rng-core/unit/composer.js');
+	var network = require('rng-core/p2p/network.js');
 
 	var rpc = require('json-rpc2');
-	var walletDefinedByKeys = require('rng-common/wallet/wallet_defined_by_keys.js');
-	var Wallet = require('rng-common/wallet/wallet.js');
-	var balances = require('rng-common/wallet/balances.js');
+	var walletDefinedByKeys = require('rng-core/wallet/wallet_defined_by_keys.js');
+	var Wallet = require('rng-core/wallet/wallet.js');
+	var balances = require('rng-core/wallet/balances.js');
 
 	var server = rpc.Server.$create({
 		'websocket': true, // is true by default

@@ -23,7 +23,7 @@
     "secp256k1": "secp256k1/js"
   },
   "dependencies": {
-    "rng-common": "git+https://github.com/ringnetwork/rng-common.git",
+    "rng-core": "git+https://github.com/ringnetwork/rng-core.git",
     "rng-miner": "git+https://github.com/ringnetwork/rng-miner.git",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",

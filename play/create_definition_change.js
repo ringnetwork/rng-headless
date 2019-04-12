@@ -1,16 +1,16 @@
 /*jslint node: true */
 "use strict";
 var headlessWallet = require('../start.js');
-var eventBus = require('rng-common/base/event_bus.js');
-var objectHash = require('rng-common/base/object_hash.js');
+var eventBus = require('rng-core/base/event_bus.js');
+var objectHash = require('rng-core/base/object_hash.js');
 
 function onError(err){
 	throw Error(err);
 }
 
 function createDefinitionChange(){
-	var composer = require('rng-common/unit/composer.js');
-	var network = require('rng-common/p2p/network.js');
+	var composer = require('rng-core/unit/composer.js');
+	var network = require('rng-core/p2p/network.js');
 	var callbacks = composer.getSavingCallbacks({
 		ifNotEnoughFunds: onError,
 		ifError: onError,
