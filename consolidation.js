@@ -1,9 +1,9 @@
 /*jslint node: true */
 "use strict";
-var constants = require('trustnote-pow-common/config/constants.js');
-var conf = require('trustnote-pow-common/config/conf.js');
-var db = require('trustnote-pow-common/db/db.js');
-var mutex = require('trustnote-pow-common/base/mutex.js');
+var constants = require('rng-common/config/constants.js');
+var conf = require('rng-common/config/conf.js');
+var db = require('rng-common/db/db.js');
+var mutex = require('rng-common/base/mutex.js');
 
 const AUTHOR_SIZE = 3 // "sig"
 	+ 44  // pubkey
@@ -130,7 +130,7 @@ function consolidate(wallet, signer){
 							}
 							let arrUsedAddresses = Object.keys(assocUsedAddresses);
 							readDestinationAddress(wallet, dest_address => {
-								var composer = require('trustnote-pow-common/composer.js');
+								var composer = require('rng-common/composer.js');
 								composer.composeJoint({
 									paying_addresses: arrUsedAddresses,
 									outputs: [{address: dest_address, amount: 0}],
@@ -139,7 +139,7 @@ function consolidate(wallet, signer){
 									earned_headers_commission_recipients: [{address: dest_address, earned_headers_commission_share: 100}],
 									callbacks: composer.getSavingCallbacks({
 										ifOk: function(objJoint){
-											var network = require('trustnote-pow-common/network.js');
+											var network = require('rng-common/network.js');
 											network.broadcastJoint(objJoint);
 											unlock();
 											consolidate(wallet, signer); // do more if something's left

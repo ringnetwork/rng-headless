@@ -1,2 +1,2 @@
-# trustnote-pow-headless
-Trustnote headless with pow supported
+# rng-headless
+ringnetwork headless with pow supported

@@ -1,30 +1,30 @@
 {
-  "name": "trustnote-pow-headless",
-  "description": "TrustNote headless wallet",
-  "author": "TrustNote",
+  "name": "rng-headless",
+  "description": "RingNetwork headless wallet",
+  "author": "RingNetwork",
   "version": "0.1.0",
   "main": "start.js",
   "keywords": [
     "wallet",
     "headless",
-    "trustnote",
+    "RingNetwork",
     "full node"
   ],
   "license": "MIT",
   "repository": {
-    "url": "https://github.com/trustnote/trustnote-pow-headless.git",
+    "url": "https://github.com/ringnetwork/rng-headless.git",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/trustnote/trustnote-pow-headless/issues"
+    "url": "https://github.com/ringnetwork/rng-headless/issues"
   },
   "browser": {
     "request": "browser-request",
     "secp256k1": "secp256k1/js"
   },
   "dependencies": {
-    "trustnote-pow-common": "git+https://github.com/trustnote/trustnote-pow-common.git",
-    "trustnote-pow-miner": "git+https://github.com/trustnote/trustnote-pow-miner.git",
+    "rng-common": "git+https://github.com/ringnetwork/rng-common.git",
+    "rng-miner": "git+https://github.com/ringnetwork/rng-miner.git",
     "bitcore-lib": "^0.13.14",
     "bitcore-mnemonic": "~1.0.0",
     "json-rpc2": "^1.0.2"

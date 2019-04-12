@@ -1,16 +1,16 @@
 /*jslint node: true */
 "use strict";
 var headlessWallet = require('../start.js');
-var eventBus = require('trustnote-pow-common/base/event_bus.js');
+var eventBus = require('rng-common/base/event_bus.js');
 
 function onError(err){
 	throw Error(err);
 }
 
 function createDivisibleAssetPayment(){
-	var network = require('trustnote-pow-common/p2p/network.js');
-	var divisibleAsset = require('trustnote-pow-common/asset/divisible_asset.js');
-	var walletGeneral = require('trustnote-pow-common/wallet/wallet_general.js');
+	var network = require('rng-common/p2p/network.js');
+	var divisibleAsset = require('rng-common/asset/divisible_asset.js');
+	var walletGeneral = require('rng-common/wallet/wallet_general.js');
 
 	divisibleAsset.composeAndSaveDivisibleAssetPaymentJoint({
 		asset: 'gRUW3CkKYA9LNf2/gX4bnDdnDZyPY9TAd9wIATzXSwE=',
