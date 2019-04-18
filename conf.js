@@ -4,11 +4,11 @@
 //exports.port = 6655;
 //exports.myUrl = 'wss://mydomain.com/bb';
 exports.bServeAsHub = false;
-exports.bLight = false;
+exports.bLight = true;
 
 exports.storage = 'sqlite';
 
-exports.hub = '10.10.11.90:9191';
+exports.hub = '119.28.44.246:9193';
 exports.deviceName = 'Headless';
 exports.permanent_pairing_secret = 'randomstring';
 exports.control_addresses = ['DEVICE ALLOWED TO CHAT'];
