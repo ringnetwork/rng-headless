@@ -4,9 +4,14 @@
 //exports.port = 6655;
 //exports.myUrl = 'wss://mydomain.com/bb';
 exports.bServeAsHub = false;
-exports.bLight = true;
+exports.bLight = false;
 
 exports.storage = 'sqlite';
+
+// deposit reward
+exports.bCalculateReward = true;
+exports.bServeAsRewardRpc = true;
+exports.rpcRewardPort = 6883;
 
 exports.hub = '119.28.44.246:9193';
 exports.deviceName = 'Headless';
