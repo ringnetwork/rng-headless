@@ -13,7 +13,7 @@ exports.bCalculateReward = true;
 exports.bServeAsRewardRpc = true;
 exports.rpcRewardPort = 6883;
 
-exports.hub = '119.28.44.246:9193';
+exports.hub = '119.28.44.246:9194';
 exports.deviceName = 'Headless';
 exports.permanent_pairing_secret = 'randomstring';
 exports.control_addresses = ['DEVICE ALLOWED TO CHAT'];
