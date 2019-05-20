@@ -13,7 +13,7 @@ exports.bCalculateReward = true;
 exports.bServeAsRewardRpc = true;
 exports.rpcRewardPort = 6883;
 
-exports.hub = 'explorer-beta2.ringnetwork.org:9194';
+exports.hub = 'explorer-beta2.ringnetwork.org:9195';
 exports.deviceName = 'Headless';
 exports.permanent_pairing_secret = 'randomstring';
 exports.control_addresses = ['DEVICE ALLOWED TO CHAT'];
