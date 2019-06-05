@@ -70,19 +70,6 @@ function initRPC() {
 	});
 
 	/**
-	 * Creates and returns new wallet address.is_change=1
-	 * @return {String} address
-	 */
-	server.expose('getNewAddress1', function(args, opt, cb) {
-		mutex.lock(['rpc_getNewAddress1'], function(unlock){
-			walletDefinedByKeys.issueNextAddress(wallet_id, 1, function(addressInfo) {
-				unlock();
-				cb(null, addressInfo.address);
-			});
-		});
-	});
-
-	/**
 	 * get all wallet address.
 	 * @return [String] address
 	 */
@@ -278,24 +265,24 @@ function initRPC() {
 		}
 	});
 
-	server.expose('getRewardUnitByPeriod', function(args, opt, cb) {
-		try{
-			if(!conf.bCalculateReward || conf.bLight)
-				return cb("bCalculateReward is false or bLight is true, cannt send reward payment"); 
-			var rewardPeriod = args[0];
+	// server.expose('getRewardUnitByPeriod', function(args, opt, cb) {
+	// 	try{
+	// 		if(!conf.bCalculateReward || conf.bLight)
+	// 			return cb("bCalculateReward is false or bLight is true, cannt send reward payment"); 
+	// 		var rewardPeriod = args[0];
 			
-			depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
-				if(err)
-					onError(err);
-				return cb(err,  err ? undefined : totalReward );
-			});	
-		}
-		catch(err)
-		{
-			console.log("wrong parameters" + err.message);
-			cb(err.message);
-		}
-	});
+	// 		depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
+	// 			if(err)
+	// 				onError(err);
+	// 			return cb(err,  err ? undefined : totalReward );
+	// 		});	
+	// 	}
+	// 	catch(err)
+	// 	{
+	// 		console.log("wrong parameters" + err.message);
+	// 		cb(err.message);
+	// 	}
+	// });
 
 	server.expose('sendRewardPayment', function(args, opt, cb) {
 		try{
