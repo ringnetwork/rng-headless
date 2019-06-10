@@ -474,8 +474,10 @@ eventBus.on('updated_last_round_index_from_peers', function (nLastRoundIndexFrom
 eventBus.on('round_switch', function(round_index){
 	if(!conf.bCalculateReward || conf.bLight)
 		return ;
+	console.log("AutoRewardPeriod start round_index:" + last_round_index);
 	if(last_round_index < conf.start_reward_round)  
 		return ;	
+	console.log("AutoRewardPeriod start last_round_index:" + last_round_index);
 	if(last_round_index === 0 || last_round_index > round_index )
 		return ;
 	if(round_index <= constants.DEPOSIT_REWARD_PERIOD)
@@ -483,7 +485,7 @@ eventBus.on('round_switch', function(round_index){
 	if((round_index-3)%constants.DEPOSIT_REWARD_PERIOD !== 0)
 		return ;
 	var rewardPeriod = depositReward.getRewardPeriod(round_index-3);
-	console.log("AutoRewardPeriod start:" + rewardPeriod);
+	console.log("AutoRewardPeriod start rewardPeriod:" + rewardPeriod);
 	depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
 		if(err)
 			onError(err);
