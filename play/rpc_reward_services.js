@@ -504,7 +504,7 @@ eventBus.on('round_switch', function(round_index){
 				if(err)
 					onError(err);
 				createRewardPayment(rewardPeriod, totalReward, function(err){
-					console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? err : "succeed!");
+					console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + (err ? err : "succeed!"));
 				});
 			});	
 		}
