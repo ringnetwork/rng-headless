@@ -422,7 +422,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 					
 						for(var i=0; i<rows.length; i++){
 							var rewardAddress = rows[i].address;
-							var rewardAmount = totalReward * (Math.floor(rows[i].reward*10000/totalCoin)/10000);
+							var rewardAmount = Math.floor(totalReward * (Math.floor(rows[i].reward*10000/totalCoin)/10000));
 							if(rewardAmount > 0){
 								arrRewardedOutputs.push(rewardAddress);
 								arrOutputs.push({address: rewardAddress, amount: rewardAmount});
