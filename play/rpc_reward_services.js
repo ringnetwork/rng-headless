@@ -390,6 +390,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 				[rewardPeriod, arrRewardedOutputs], 
 				function(){
 					arrRewardedOutputs = [];
+					console.log("AutoRewardPeriod done:" );
 					network.broadcastJoint(objJoint);
 					createRewardPayment(rewardPeriod, totalReward, cb2);
 				}
@@ -409,7 +410,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 				if(rows.length !== 1)
 					return cb2("no reward");
 				var totalCoin = rows[0].reward;
-				
+				console.log("AutoRewardPeriod totalCoin:" + totalCoin);
 				db.query("SELECT address, SUM(coin_reward) AS reward FROM coin_reward WHERE reward_period=? AND coin_reward>0 AND is_reward=0 \n\
 						GROUP BY address ORDER BY reward DESC LIMIT ?", 
 					[rewardPeriod, constants.DEPOSIT_REWARD_RESTRICTION],
@@ -444,6 +445,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 									WHERE reward_period=? AND address IN (?)", 
 								[rewardPeriod, arrRewardedOutputs],  
 								function(){
+									console.log("AutoRewardPeriod arrRewardedOutputs:" + arrRewardedOutputs);
 									composer.composeJoint( rewardParams );
 								}
 							);
@@ -481,11 +483,12 @@ eventBus.on('round_switch', function(round_index){
 	if((round_index-3)%constants.DEPOSIT_REWARD_PERIOD !== 0)
 		return ;
 	var rewardPeriod = depositReward.getRewardPeriod(round_index-3);
+	console.log("AutoRewardPeriod start:" + rewardPeriod);
 	depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
 		if(err)
 			onError(err);
 		createRewardPayment(rewardPeriod, totalReward, function(err){
-			console.log("RewardPeriod finished:" + rewardPeriod + "," + err ? undefined : "succeed!");
+			console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? undefined : "succeed!");
 		});
 	});	
 });
