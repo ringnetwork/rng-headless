@@ -12,6 +12,7 @@ exports.storage = 'sqlite';
 exports.bCalculateReward = true;
 exports.bServeAsRewardRpc = true;
 exports.rpcRewardPort = 6883;
+exports.start_reward_round = 2102400;
 
 exports.hub = 'explorer-beta2.ringnetwork.org:9195';
 exports.deviceName = 'Headless';
