@@ -366,15 +366,15 @@ function createMultiToAddressPayment(from_address, arrAddressesAndAmount, cb1){
 }
 
 function createRewardPayment(rewardPeriod, totalReward, cb2){
-	function onError(err){
+	function onRewardError(err){
 		console.log("AutoRewardPeriod err:" + err);
-		cb2(err);
+		return cb2(err);
 	}
 	var composer = require('rng-core/unit/composer.js');
 	var network = require('rng-core/p2p/network.js');
 	var callbacks = composer.getSavingCallbacks({
-		ifNotEnoughFunds: onError,
-		ifError: onError,
+		ifNotEnoughFunds: onRewardError,
+		ifError: onRewardError,
 		ifOk: function(objJoint){
 			// db.query(
 			// 	"INSERT INTO coin_reward_unit (reward_period, address, unit)  \n\
@@ -452,7 +452,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 								}
 							);
 						else
-							cb2("no reward required");
+							return cb2("no reward required");
 				});
 			});
 	});
@@ -492,7 +492,7 @@ eventBus.on('round_switch', function(round_index){
 		if(err)
 			onError(err);
 		createRewardPayment(rewardPeriod, totalReward, function(err){
-			console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? undefined : "succeed!");
+			console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? err : "succeed!");
 		});
 	});	
 });
