@@ -316,8 +316,7 @@ function initRPC() {
 							if(err)
 								onError(err);
 							createRewardPayment(rewardPeriod, totalReward, function(err){
-								console.log("AutoRewardPeriod Manual finished");
-								//console.log("AutoRewardPeriod Manual finished:" + rewardPeriod + "," + err ? err : "succeed!");
+								console.log("AutoRewardPeriod Manual finished:" + rewardPeriod + "," + (err ? err : "succeed!"));
 								cb( err ? err : "succeed!" );
 							});
 						});	
