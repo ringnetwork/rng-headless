@@ -19,6 +19,13 @@ var objectHash = require("rng-core/base/object_hash.js");
 var depositReward  = require("rng-core/sc/deposit_reward.js");
 var wallet_id;
 
+var last_round_index = 0;
+var last_main_chain_index = 0;
+
+var arrRewardedOutputs = [];
+
+var MAX_OUTPUTS = 3;
+
 if (conf.bSingleAddress)
 	throw Error('can`t run in single address mode');
 
@@ -368,13 +375,23 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 		ifNotEnoughFunds: onError,
 		ifError: onError,
 		ifOk: function(objJoint){
+			// db.query(
+			// 	"INSERT INTO coin_reward_unit (reward_period, address, unit)  \n\
+			// 	 VALUES (?, ?, ?)", 
+			// 	[rewardPeriod, objJoint.unit.authors[0].address, objJoint.unit.unit], 
+			// 	function(){
+					// network.broadcastJoint(objJoint);
+					// cb2();
+			// 	}
+			// );
 			db.query(
-				"INSERT INTO coin_reward_unit (reward_period, address, unit)  \n\
-				 VALUES (?, ?, ?)", 
-				[rewardPeriod, objJoint.unit.authors[0].address, objJoint.unit.unit], 
+				"UPDATE coin_reward SET is_reward=2 \n\
+					WHERE reward_period=? AND address IN (?)", 
+				[rewardPeriod, arrRewardedOutputs], 
 				function(){
+					arrRewardedOutputs = [];
 					network.broadcastJoint(objJoint);
-					cb2();
+					createRewardPayment(rewardPeriod, totalReward, cb2);
 				}
 			);
 		}
@@ -384,41 +401,56 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 		var arrOutputs = [
 			{address: from_address, amount: 0}      // the change
 		];
+		arrRewardedOutputs = [];
 		var  reward_message = "DepositReward:"+rewardPeriod;
-		db.query("SELECT address, SUM(coin_reward) AS reward FROM coin_reward WHERE reward_period=? AND coin_reward>0 \n\
-				GROUP BY address ORDER BY reward DESC LIMIT ?", 
+		db.query("SELECT SUM(coin_reward) AS reward FROM coin_reward WHERE reward_period=? AND coin_reward>0", 
 			[rewardPeriod, constants.DEPOSIT_REWARD_RESTRICTION],
 			function(rows){
-				if(rows.length === 0)
+				if(rows.length !== 1)
 					return cb2("no reward");
-				var totalCoin = 0;
-				for(var i=0; i<rows.length; i++){
-					totalCoin += rows[i].reward;
-				}
-				for(var i=0; i<rows.length; i++){
-					var rewardAddress = rows[i].address;
-					var rewardAmount = totalReward * (Math.floor(rows[i].reward*10000/totalCoin)/10000);
-					if(rewardAmount > 0)
-						arrOutputs.push({address: rewardAddress, amount: rewardAmount});
-				}
+				var totalCoin = rows[0].reward;
+				
+				db.query("SELECT address, SUM(coin_reward) AS reward FROM coin_reward WHERE reward_period=? AND coin_reward>0 AND is_reward=0 \n\
+						GROUP BY address ORDER BY reward DESC LIMIT ?", 
+					[rewardPeriod, constants.DEPOSIT_REWARD_RESTRICTION],
+					function(rows){
+						if(rows.length === 0)
+							return cb2("no reward");
+					
+						for(var i=0; i<rows.length; i++){
+							var rewardAddress = rows[i].address;
+							var rewardAmount = totalReward * (Math.floor(rows[i].reward*10000/totalCoin)/10000);
+							if(rewardAmount > 0){
+								arrRewardedOutputs.push(rewardAddress);
+								arrOutputs.push({address: rewardAddress, amount: rewardAmount});
+							}
+						}
 
-				var rewardParams = {
-					paying_addresses: [from_address],
-					outputs: arrOutputs,
-					signer: headlessWallet.signer,
-					callbacks: callbacks,
-					messages: [{
-						app: "text",
-						payload_location: "inline",
-						payload_hash: objectHash.getBase64Hash(reward_message),
-						payload: reward_message
-					}]
-				};
-				if(arrOutputs.length > 1)
-					composer.composeJoint( rewardParams );
-				else
-					cb2("no reward required");
-		});
+						var rewardParams = {
+							paying_addresses: [from_address],
+							outputs: arrOutputs,
+							signer: headlessWallet.signer,
+							callbacks: callbacks,
+							messages: [{
+								app: "text",
+								payload_location: "inline",
+								payload_hash: objectHash.getBase64Hash(reward_message),
+								payload: reward_message
+							}]
+						};
+						if(arrOutputs.length > 1)
+							db.query(
+								"UPDATE coin_reward SET is_reward=1 \n\
+									WHERE reward_period=? AND address IN (?)", 
+								[rewardPeriod, arrRewardedOutputs],  
+								function(){
+									composer.composeJoint( rewardParams );
+								}
+							);
+						else
+							cb2("no reward required");
+				});
+			});
 	});
 }
 
@@ -426,20 +458,37 @@ function onError(err){
 	throw Error(err);
 }
 
-// eventBus.on('round_switch', function(round_index){
-// 	if(!conf.bCalculateReward || !conf.bLight)
-// 		return 
-// 	if(round_index <= constants.DEPOSIT_REWARD_PERIOD)
-// 		return 
-// 	if((round_index-3)%constants.DEPOSIT_REWARD_PERIOD !== 0)
-// 		return 
-// 	var rewardPeriod = depositReward.getRewardPeriod(round_index-3);
-// 	depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
-// 		if(err)
-// 			onError(err);
-// 		createRewardPayment(rewardPeriod, totalReward);
-// 	});	
-// });
+eventBus.on('updated_last_round_index_from_peers', function (nLastRoundIndexFromPeers, nLastMainChainIndexFromPeers){
+    if ( last_round_index < nLastRoundIndexFromPeers )        
+    {
+        last_round_index = nLastRoundIndexFromPeers;
+    }
+    if ( last_main_chain_index < nLastMainChainIndexFromPeers )        
+    {
+        last_main_chain_index = nLastMainChainIndexFromPeers;
+    }
+})
+
+eventBus.on('round_switch', function(round_index){
+	if(!conf.bCalculateReward || !conf.bLight)
+		return ;
+	if(last_round_index < conf.start_reward_round)  
+		return ;	
+	if(last_round_index === 0 || last_round_index > round_index )
+		return ;
+	if(round_index <= constants.DEPOSIT_REWARD_PERIOD)
+		return ;
+	if((round_index-3)%constants.DEPOSIT_REWARD_PERIOD !== 0)
+		return ;
+	var rewardPeriod = depositReward.getRewardPeriod(round_index-3);
+	depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
+		if(err)
+			onError(err);
+		createRewardPayment(rewardPeriod, totalReward, function(err){
+			console.log("RewardPeriod finished:" + rewardPeriod + "," + err ? undefined : "succeed!");
+		});
+	});	
+});
 
 
 eventBus.on('headless_wallet_ready', initRPC);
