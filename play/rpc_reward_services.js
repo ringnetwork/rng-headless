@@ -317,6 +317,7 @@ function initRPC() {
 								onError(err);
 							createRewardPayment(rewardPeriod, totalReward, function(err){
 								console.log("AutoRewardPeriod Manual finished:" + rewardPeriod + "," + err ? err : "succeed!");
+								cb( err ? err : "succeed!" );
 							});
 						});	
 					})
@@ -395,9 +396,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 					arrRewardedOutputs = [];
 					console.log("AutoRewardPeriod done:" );
 					network.broadcastJoint(objJoint);
-					createRewardPayment(rewardPeriod, totalReward, function(err){
-						console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? err : "succeed!");
-					});
+					createRewardPayment(rewardPeriod, totalReward, cb2);
 				}
 			);
 		}
