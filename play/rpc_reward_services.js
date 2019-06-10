@@ -367,6 +367,7 @@ function createMultiToAddressPayment(from_address, arrAddressesAndAmount, cb1){
 
 function createRewardPayment(rewardPeriod, totalReward, cb2){
 	function onError(err){
+		console.log("AutoRewardPeriod err:" + err);
 		cb2(err);
 	}
 	var composer = require('rng-core/unit/composer.js');
