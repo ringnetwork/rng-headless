@@ -385,6 +385,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 					// cb2();
 			// 	}
 			// );
+			console.log("AutoRewardPeriod ifok:" );
 			db.query(
 				"UPDATE coin_reward SET is_reward=2 \n\
 					WHERE reward_period=? AND address IN (?)", 
