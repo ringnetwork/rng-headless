@@ -405,7 +405,7 @@ function createRewardPayment(rewardPeriod, totalReward, cb2){
 		arrRewardedOutputs = [];
 		var  reward_message = "DepositReward:"+rewardPeriod;
 		db.query("SELECT SUM(coin_reward) AS reward FROM coin_reward WHERE reward_period=? AND coin_reward>0", 
-			[rewardPeriod, constants.DEPOSIT_REWARD_RESTRICTION],
+			[rewardPeriod],
 			function(rows){
 				if(rows.length !== 1)
 					return cb2("no reward");
