@@ -311,11 +311,12 @@ function initRPC() {
 							return cb("the first reward period dont need send reward payment"); 
 						if(round_index < rewardPeriod*constants.DEPOSIT_REWARD_PERIOD)
 							return cb("cannt send reward payment for the future period");  
+						console.log("AutoRewardPeriod Manual start rewardPeriod:" + rewardPeriod);
 						depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
 							if(err)
 								onError(err);
 							createRewardPayment(rewardPeriod, totalReward, function(err){
-								cb(err, err ? undefined : "succeed!");
+								console.log("AutoRewardPeriod Manual finished:" + rewardPeriod + "," + err ? err : "succeed!");
 							});
 						});	
 					})
@@ -490,13 +491,25 @@ eventBus.on('round_switch', function(round_index){
 		return ;
 	var rewardPeriod = depositReward.getRewardPeriod(round_index-3);
 	console.log("AutoRewardPeriod start rewardPeriod:" + rewardPeriod);
-	depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
-		if(err)
-			onError(err);
-		createRewardPayment(rewardPeriod, totalReward, function(err){
-			console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? err : "succeed!");
-		});
-	});	
+	var reward_message = "DepositReward:"+rewardPeriod;
+	var payload_hash = objectHash.getBase64Hash(reward_message);
+	db.query(
+		"SELECT count(*) AS unitCount FROM messages where payload_hash=?", 
+		[payload_hash], 
+		function(rows){
+			if(rows.length !== 1)
+				return ;
+			if(rows[0].unitCount > 0)
+				return ;
+			depositReward.getTotalRewardByPeriod(db, rewardPeriod, function(err, totalReward){
+				if(err)
+					onError(err);
+				createRewardPayment(rewardPeriod, totalReward, function(err){
+					console.log("AutoRewardPeriod finished:" + rewardPeriod + "," + err ? err : "succeed!");
+				});
+			});	
+		}
+	);	
 });
 
 
