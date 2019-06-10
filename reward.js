@@ -62,7 +62,7 @@ function createRewardPayment(rewardPeriod, totalReward){
 
 
 eventBus.on('round_switch', function(round_index){
-	if(!conf.bCalculateReward || !conf.bLight)
+	if(!conf.bCalculateReward || conf.bLight)
 		return 
 	if(round_index <= constants.DEPOSIT_REWARD_PERIOD)
 		return 

@@ -472,7 +472,7 @@ eventBus.on('updated_last_round_index_from_peers', function (nLastRoundIndexFrom
 })
 
 eventBus.on('round_switch', function(round_index){
-	if(!conf.bCalculateReward || !conf.bLight)
+	if(!conf.bCalculateReward || conf.bLight)
 		return ;
 	if(last_round_index < conf.start_reward_round)  
 		return ;	
